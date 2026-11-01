@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="bg"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Балотаж 2026 – неофициални данни по агенции</title>
+<style>
+:root{--text-primary:#f0efec;--text-secondary:#c3c2b7;--text-muted:#898781;--surface-1:#2c2c2a;--border:#444441}
+body{margin:0;background:#1f1f1e;font-family:"DejaVu Sans",system-ui,Arial,sans-serif;color:var(--text-primary)}
+.wrap{max-width:560px;margin:0 auto;padding:18px 20px 14px}
+h1{font-size:18px;font-weight:600;margin:0 0 2px}
+.sub{font-size:12px;color:#a8a69e;margin-bottom:10px}
+.r{display:grid;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:8px;margin:6px 0;font-variant-numeric:tabular-nums}
+.t{font-size:13px;color:var(--text-secondary)}
+.box{position:relative;height:20px}
+.trk{height:20px;background:var(--surface-1);border-radius:4px;display:flex;overflow:hidden}
+.seg{display:flex;align-items:center;font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
+.g{justify-content:flex-start;padding-left:7px}
+.y{justify-content:flex-end;padding-right:7px}
+.mid{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--text-primary);border-radius:1px}
+.ag{font-size:14px;font-weight:600;color:var(--text-primary);margin:14px 0 2px}
+.ag span{font-weight:400;font-size:11px;color:var(--text-muted);margin-left:8px}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--text-secondary);margin:4px 0 2px}
+.leg span{display:flex;align-items:center;gap:5px}
+.foot{font-size:11px;color:var(--text-muted);margin-top:12px;line-height:1.5}
+</style></head><body><div class="wrap">
+<h1>Балотаж 2026 – неофициални данни по агенции</h1><div class="sub">Гюров / Йотова · час – българско време · обновено 01.11.2026, 15:33</div>
+<div class="leg">
+<span><i style="width:11px;height:11px;border-radius:2px;background:#3d8fd1;display:inline-block"></i>Гюров</span>
+<span><i style="width:11px;height:11px;border-radius:2px;background:#d03b3b;display:inline-block"></i>Йотова</span>
+<span><i style="width:11px;height:11px;border-radius:2px;background:var(--surface-1);border:1px solid var(--border);display:inline-block"></i>Никого / без данни</span>
+<span><i style="width:2px;height:13px;background:var(--text-primary);display:inline-block"></i>Равенство</span>
+</div>
+<div id="w"></div>
+<div class="foot">Неофициални данни от изборния ден, преди края на гласуването. Не са екзит пол и не са резултат.<br>Маркерът „Равенство“ е по средата между двамата кандидати (без „Не подкрепям никого“).</div>
+</div>
+<script>
+const A=[["1-ва агенция", "@prezizbra, Клуб Z", [["9:00", 38, 57], ["11:00", 40, 56], ["13:00", 42, 53], ["14:00", 41.7, 53.9]]], ["2-ра агенция", "@prezizbra 9:00 · Дневник 10:30–14:30", [["9:00", 37, 57], ["10:30", 37.6, 56.8], ["12:30", 40.6, 55.2], ["14:30", 44.2, 52.4]]], ["3-та агенция", "@prezizbra", [["11:00", 45, 49]]], ["4-та агенция", "@prezizbra", [["12:00", 39.4, 55.9], ["14:00", 41, 54.6]]]];
+const f=v=>String(v).replace('.',',')+'%';
+document.getElementById('w').innerHTML=A.map(a=>'<div class="ag">'+a[0]+'<span>'+a[1]+'</span></div>'+a[2].map(r=>{const eq=(r[1]+r[2])/2;return '<div class="r"><span class="t">'+r[0]+'</span><div class="box"><div class="trk"><div class="seg g" style="width:'+r[1]+'%;background:#3d8fd1">'+f(r[1])+'</div><div class="seg y" style="width:'+r[2]+'%;background:#d03b3b">'+f(r[2])+'</div></div><span class="mid" style="left:'+eq+'%"></span></div></div>'}).join('')).join('');
+</script></body></html>
