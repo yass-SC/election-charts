@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="bg"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Междинни избори в САЩ 2026 – неофициални резултати</title>
+<style>
+:root{--text-primary:#f0efec;--text-secondary:#c3c2b7;--text-muted:#898781;--surface-1:#2c2c2a;--border:#444441}
+body{margin:0;background:#1f1f1e;font-family:"DejaVu Sans",system-ui,Arial,sans-serif;color:var(--text-primary)}
+.wrap{max-width:680px;margin:0 auto;padding:18px 20px 24px;font-variant-numeric:tabular-nums}
+h1{font-size:18px;font-weight:600;margin:0 0 2px}
+.sub{font-size:12px;color:#a8a69e;margin-bottom:4px}
+.upd{font-size:12px;color:var(--text-muted);margin-bottom:12px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.tabs button{font:inherit;font-size:13px;padding:5px 12px;background:transparent;color:var(--text-secondary);border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.tabs button.on{background:var(--surface-1);color:var(--text-primary);border-color:#6b6a65}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--text-secondary);margin:0 0 6px}
+.leg span,.leg3 span{display:flex;align-items:center;gap:5px}
+.leg3{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;font-size:12px;color:var(--text-secondary);margin:0 0 6px}
+.leg3 .L{display:flex;flex-wrap:wrap;gap:12px}
+.leg3 .C{display:flex;flex-direction:column;align-items:center;gap:2px}
+.leg3 .Rr{display:flex;justify-content:flex-end}
+.sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.mk{width:2px;height:12px;background:var(--text-primary);display:inline-block}
+.row{display:grid;grid-template-columns:116px minmax(0,1fr) 120px;align-items:center;gap:8px;margin:6px 0;cursor:pointer}
+.row.nc{cursor:default}
+.nm{font-size:13px;color:var(--text-primary)}
+.st{font-size:12px;color:var(--text-secondary);text-align:right;line-height:1.35}
+.st b{font-weight:600;color:var(--text-primary)}
+.box{position:relative;height:20px}
+.trk{height:20px;background:var(--surface-1);border-radius:4px;display:flex;overflow:hidden;border:1px solid var(--border);box-sizing:border-box}
+.sg{box-sizing:border-box;display:flex;align-items:center;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.sg.l{justify-content:flex-start;padding-left:6px}
+.sg.r{justify-content:flex-end;padding-right:6px}
+.sp{flex:1}
+.mid{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--text-primary);border-radius:1px}
+.hist{margin:2px 0 8px 124px;padding:6px 0 2px;border-top:1px solid var(--border)}
+.hr{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;align-items:center;margin:4px 0;font-size:12px;color:var(--text-secondary)}
+.hr .box,.hr .trk{height:16px}
+.h3{font-size:14px;font-weight:600;margin:20px 0 6px}
+.h3 small{font-weight:400;font-size:11px;color:var(--text-muted);margin-left:8px}
+.mc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 12px}
+.mc div{background:var(--surface-1);border-radius:8px;padding:10px 12px}
+.mc small{display:block;font-size:12px;color:var(--text-secondary)}
+.mc strong{font-size:20px;font-weight:600}
+.empty{font-size:13px;color:var(--text-muted);padding:10px 0}
+.foot{font-size:11px;color:var(--text-muted);margin-top:16px;line-height:1.5}
+</style></head><body><div class="wrap">
+<h1>Междинни избори в САЩ 2026 – неофициални резултати</h1><div class="sub">Сенат, Камара, губернатори и референдуми · час – белгийско време</div><div class="upd">Обновено: още няма данни, първото обновяване е в 00:00 на 04.11.2026</div>
+<div class="tabs" id="tabs"></div>
+<div id="view"></div>
+<div class="foot">Неофициални данни, докато не бъдат обявени от Associated Press. Белият маркер при местата е мнозинството, при състезанията – равенство. Щракни на ред, за да видиш как се е променял или кои са окръзите на щата.</div>
+</div>
+<script>
+var DATA={"title": "Междинни избори в САЩ 2026 – неофициални резултати", "sub": "Сенат, Камара, губернатори и референдуми · час – белгийско време", "updated": "още няма данни, първото обновяване е в 00:00 на 04.11.2026", "times": [], "chambers": {"sen": {"tot": 100, "mj": 51, "d": [], "i": [], "r": []}, "hou": {"tot": 435, "mj": 218, "d": [], "i": [], "r": []}}, "senate": [], "gov": [], "housecontested": [], "housestates": [], "measures": [], "foot": "Неофициални данни, докато не бъдат обявени от Associated Press. Белият маркер при местата е мнозинството, при състезанията – равенство. Щракни на ред, за да видиш как се е променял или кои са окръзите на щата."};
+var D='#2a6fb8',I='#6db3ea',R='#d03b3b',Y='#1baf7a',N='#eb6834';
+var f=function(v){return String(Math.round(v*10)/10).replace('.',',')+'%'};
+var leg=function(a,lm){return '<div class="leg">'+a.map(function(x){return '<span><i class="sw" style="background:'+x[0]+(x[2]?';border:1px solid var(--border)':'')+'"></i>'+x[1]+'</span>'}).join('')+'<span><i class="mk"></i>'+lm+'</span></div>'};
+var leg3=function(){return '<div class="leg3"><div class="L"><span><i class="sw" style="background:'+D+'"></i>Демократи</span><span><i class="sw" style="background:'+I+'"></i>Независими (с Демократите)</span></div><div class="C"><span><i class="sw" style="background:var(--surface-1);border:1px solid var(--border)"></i>Неясни</span><span><i class="mk"></i>Мнозинство</span></div><div class="Rr"><span><i class="sw" style="background:'+R+'"></i>Републиканци</span></div></div>'};
+var rb=function(a,b,ca,cb){
+  return '<div class="box"><div class="trk"><div class="sg l" style="width:'+a+'%;background:'+ca+'">'+(a>=8?f(a):'')+'</div><div class="sg r" style="width:'+b+'%;background:'+cb+'">'+(b>=8?f(b):'')+'</div></div><span class="mid" style="left:'+((a+b)/2)+'%"></span></div>';
+};
+var sb=function(left,right,tot,rc){
+  var l=left.map(function(p){var w=p[0]/tot*100;if(!w)return '';return '<div class="sg l" style="width:'+w+'%;background:'+p[1]+'">'+(w>=6?p[0]:'')+'</div>'}).join('');
+  var w2=right/tot*100;
+  return '<div class="box"><div class="trk">'+l+'<div class="sp"></div>'+(w2?'<div class="sg r" style="width:'+w2+'%;background:'+rc+'">'+(w2>=6?right:'')+'</div>':'')+'</div><span class="mid" style="left:50%"></span></div>';
+};
+var seed=0;
+var empty=function(t){return '<div class="empty">'+t+'</div>'};
+var rows=function(list,key,ca,cb){
+  return list.map(function(r){
+    var id=key+(seed++);
+    var h=r[6]||[];
+    var head='<div class="row'+(h.length?'':' nc')+'"'+(h.length?' data-id="'+id+'"':'')+'><span class="nm">'+r[0]+'</span>'+rb(r[1],r[2],ca,cb)+'<span class="st">'+r[4]+'<br>преброени '+r[3]+'%</span></div>';
+    var hh=h.length?'<div class="hist" id="'+id+'" style="display:none">'+h.map(function(x){return '<div class="hr"><span>'+x[0]+'</span>'+rb(x[1],x[2],ca,cb)+'</div>'}).join('')+'</div>':'';
+    return head+hh;
+  }).join('');
+};
+var grouped=function(list,key,ca,cb){
+  if(!list.length)return empty('Още няма данни. Очаква се първото обновяване.');
+  var g=[[],[],[]];
+  list.forEach(function(r){var m=Math.abs(r[1]-r[2]);var k=r[5]?2:(m<=2?0:1);g[k].push(r)});
+  var by=function(a,b){return Math.abs(a[1]-a[2])-Math.abs(b[1]-b[2])};
+  g[0].sort(by);g[1].sort(by);g[2].sort(function(a,b){return a[0]<b[0]?-1:1});
+  var t=[['Най-оспорвани','разлика до 2 пункта, не е обявен'],['Водят, но не са обявени','разлика над 2 пункта'],['Обявени','победителят е потвърден']];
+  return g.map(function(a,i){return a.length?'<div class="h3">'+t[i][0]+' ('+a.length+')<small>'+t[i][1]+'</small></div>'+rows(a,key+i,ca,cb):''}).join('');
+};
+var HS=DATA.chambers;
+var hist=function(k){
+  var h=HS[k],T=DATA.times;
+  if(!T.length)return empty('Още няма данни.');
+  var W=640,H=190,pl=34,pr=10,pt=10,pb=24;
+  var x=function(i){return T.length>1?pl+(W-pl-pr)*i/(T.length-1):pl+(W-pl-pr)/2};
+  var y=function(v){return H-pb-(H-pt-pb)*v/h.tot};
+  var ln=function(a,c){return '<polyline fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" points="'+a.map(function(v,i){return x(i)+','+y(v)}).join(' ')+'"/><circle cx="'+x(a.length-1)+'" cy="'+y(a[a.length-1])+'" r="4" fill="'+c+'" stroke="#1f1f1e" stroke-width="2"/>'};
+  var gl=[0,0.25,0.5,0.75,1].map(function(t){var v=Math.round(h.tot*t);return '<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#2c2c2a" stroke-width="1"/><text x="'+(pl-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#898781">'+v+'</text>'}).join('');
+  var step=Math.max(1,Math.ceil(T.length/8));
+  var xl=T.map(function(t,i){return i%step==0?'<text x="'+x(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="11" fill="#898781">'+t+'</text>':''}).join('');
+  var mj='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(h.mj)+'" y2="'+y(h.mj)+'" stroke="#f0efec" stroke-width="1.5" stroke-dasharray="4 3"/><text x="'+(W-pr)+'" y="'+(y(h.mj)-5)+'" text-anchor="end" font-size="11" fill="#c3c2b7">мнозинство '+h.mj+'</text>';
+  var dd=h.d.map(function(v,i){return v+((h.i||[])[i]||0)});
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(dd,D)+ln(h.r,R)+xl+'</svg>';
+};
+var last=function(a){return a&&a.length?a[a.length-1]:0};
+var chamber=function(k,lbl,sub){
+  var c=HS[k],d=last(c.d),i=last(c.i),r=last(c.r),un=c.tot-d-i-r;
+  var cards='<div class="mc"><div><small>'+(k=='sen'?'Демократи и независими':'Демократи')+'</small><strong>'+(d+i)+'</strong></div><div><small>Републиканци</small><strong>'+r+'</strong></div><div><small>Още неясни</small><strong>'+un+'</strong></div></div>';
+  return '<div class="h3">'+lbl+'<small>'+sub+'</small></div>'+cards+'<div class="row nc" style="grid-template-columns:minmax(0,1fr)">'+sb(i?[[d,D],[i,I]]:[[d,D]],r,c.tot,R)+'</div>';
+};
+var ov=function(){
+  return leg3()+chamber('sen','Сенат','100 места, мнозинство 51')+chamber('hou','Камара на представителите','435 места, мнозинство 218')+'<div class="h3">Места през нощта</div><div class="tabs" id="ctog"><button data-k="sen" class="on">Сенат</button><button data-k="hou">Камара</button></div><div id="hc">'+hist('sen')+'</div>';
+};
+var dist=function(list){
+  return list.map(function(d){return '<div class="hr" style="grid-template-columns:70px minmax(0,1fr) 130px"><span>'+d[0]+'</span>'+rb(d[1],d[2],D,R)+'<span style="text-align:right">'+(d[3]?'Обявен: ':'Води: ')+(d[1]>d[2]?'Демократи':'Републиканци')+'</span></div>'}).join('');
+};
+var hou=function(){
+  var c=DATA.housecontested,s=DATA.housestates;
+  var a=leg([[D,'Демократи'],[R,'Републиканци'],['var(--surface-1)','Още неброени',1]],'Равенство')+'<div class="h3">Най-оспорвани окръзи<small>влизат нови, щом станат тесни</small></div>'+(c.length?rows(c,'cl',D,R):empty('Още няма данни.'));
+  var st='<div class="h3">Места по щат<small>щракни на щат за окръзите му</small></div>'+leg3();
+  st+=s.length?s.map(function(x,i){var t=x[1]+x[2]+x[3];var has=x[4]&&x[4].length;return '<div class="row'+(has?'':' nc')+'"'+(has?' data-id="hs'+i+'"':'')+'><span class="nm">'+x[0]+'</span>'+sb([[x[1],D]],x[2],t,R)+'<span class="st">от '+t+' места<br>неясни '+x[3]+'</span></div>'+(has?'<div class="hist" id="hs'+i+'" style="display:none">'+dist(x[4])+'</div>':'')}).join(''):empty('Още няма данни.');
+  return a+st;
+};
+var views={
+ ov:['Преглед',ov],
+ sen:['Сенат',function(){return leg([[D,'Демократи'],[R,'Републиканци'],['var(--surface-1)','Други / още неброени',1]],'Равенство')+grouped(DATA.senate,'s',D,R)}],
+ hou:['Камара',hou],
+ gov:['Губернатори',function(){return leg([[D,'Демократи'],[R,'Републиканци'],['var(--surface-1)','Други / още неброени',1]],'Равенство')+grouped(DATA.gov,'g',D,R)}],
+ mea:['Референдуми',function(){return leg([[Y,'За'],[N,'Против'],['var(--surface-1)','Още неброени',1]],'Равенство')+grouped(DATA.measures,'m',Y,N)}]
+};
+var show=function(k){
+  seed=0;
+  document.getElementById('tabs').innerHTML=Object.keys(views).map(function(x){return '<button data-k="'+x+'"'+(x==k?' class="on"':'')+'>'+views[x][0]+'</button>'}).join('');
+  document.getElementById('view').innerHTML=views[k][1]();
+  Array.prototype.forEach.call(document.querySelectorAll('#tabs button'),function(b){b.onclick=function(){show(b.dataset.k)}});
+  Array.prototype.forEach.call(document.querySelectorAll('.row[data-id]'),function(r){r.onclick=function(){var e=document.getElementById(r.dataset.id);e.style.display=e.style.display=='none'?'block':'none'}});
+  var tg=document.getElementById('ctog');
+  if(tg){Array.prototype.forEach.call(tg.querySelectorAll('button'),function(b){b.onclick=function(){Array.prototype.forEach.call(tg.querySelectorAll('button'),function(x){x.className=''});b.className='on';document.getElementById('hc').innerHTML=hist(b.dataset.k)}})}
+};
+show('ov');
+</script></body></html>
