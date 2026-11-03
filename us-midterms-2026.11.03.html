@@ -100,16 +100,18 @@ var hist=function(k){
   var step=Math.max(1,Math.ceil(T.length/8));
   var xl=T.map(function(t,i){return i%step==0?'<text x="'+x(i)+'" y="'+(H-6)+'" text-anchor="'+(i==T.length-1&&T.length>1?'end':'middle')+'" font-size="11" fill="#898781">'+t+'</text>':''}).join('');
   var mj='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(h.mj)+'" y2="'+y(h.mj)+'" stroke="#f0efec" stroke-width="1.5" stroke-dasharray="4 3"/><text x="'+(W-pr-4)+'" y="'+(y(h.mj)-5)+'" text-anchor="end" font-size="11" fill="#c3c2b7">мнозинство '+h.mj+'</text>';
-  var ends=[[last(dd),D],[last(h.r),R],[last(uu),'#898781']].map(function(e){return {v:e[0],c:e[1],y:y(e[0])+4}}).sort(function(a,b){return a.y-b.y});
+  var ends=[[last(dd),D],[last(h.r),R]].map(function(e){return {v:e[0],c:e[1],y:y(e[0])+4}}).sort(function(a,b){return a.y-b.y});
   for(var n=1;n<ends.length;n++){if(ends[n].y-ends[n-1].y<13)ends[n].y=ends[n-1].y+13}
   var el=ends.map(function(e){return '<text x="'+(W-pr+10)+'" y="'+e.y+'" font-size="12" font-weight="600" fill="'+e.c+'">'+e.v+'</text>'}).join('');
-  var lg='<div class="leg" style="margin-top:6px"><span><i class="sw" style="background:'+D+'"></i>Демократи'+(k=='sen'?' и независими':'')+'</span><span><i class="sw" style="background:'+R+'"></i>Републиканци</span><span><i class="sw" style="background:#898781"></i>Неясни – още без обявен победител</span><span><i class="mk"></i>Мнозинство</span></div>';
-  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(uu,'#898781',1)+ln(dd,D)+ln(h.r,R)+xl+el+'</svg>'+lg+'<div class="foot" style="margin-top:6px">Мнозинството се достига, когато линията на партията стигне чертата. Сивата линия показва местата, за които още няма обявен победител.'+(k=='sen'?' В Сената са включени всички места в новия състав, и тези, които не са на ход.':'')+'</div>';
+  var nd=Math.max(0,h.mj-last(dd)),nr=Math.max(0,h.mj-last(h.r));
+  var need='<div class="mc" style="grid-template-columns:1fr 1fr;margin-top:8px"><div class="l"><small>Демократи – още до мнозинство</small><strong>'+(nd?nd:'има мнозинство')+'</strong></div><div class="r"><small>Републиканци – още до мнозинство</small><strong>'+(nr?nr:'има мнозинство')+'</strong></div></div>';
+  var lg='<div class="leg" style="margin-top:6px"><span><i class="sw" style="background:'+D+'"></i>Демократи'+(k=='sen'?' и независими':'')+'</span><span><i class="sw" style="background:'+R+'"></i>Републиканци</span><span><i class="mk"></i>Мнозинство</span></div>';
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(dd,D)+ln(h.r,R)+xl+el+'</svg>'+lg+need+'<div class="foot" style="margin-top:6px">'+(k=='sen'?'В Сената са включени всички места в новия състав, и тези, които не са на ход.':'')+'</div>';
 };
 var last=function(a){return a&&a.length?a[a.length-1]:0};
 var chamber=function(k,lbl,sub){
   var c=HS[k],d=last(c.d),i=last(c.i),r=last(c.r),un=c.tot-d-i-r;
-  var it=k=='sen'?[['Демократи',d,'l'],['Независими',i,'l'],['Още неясни',un,'c'],['Републиканци',r,'r']]:[['Демократи',d,'l'],['Още неясни',un,'c'],['Републиканци',r,'r']];
+  var it=k=='sen'?[['Демократи и независими',(d+i)+' ('+d+'+'+i+')','l'],['Още неясни',un,'c'],['Републиканци',r,'r']]:[['Демократи',d,'l'],['Още неясни',un,'c'],['Републиканци',r,'r']];
   var cards='<div class="mc" style="grid-template-columns:repeat('+it.length+',1fr)">'+it.map(function(x){return '<div class="'+x[2]+'"><small>'+x[0]+'</small><strong>'+x[1]+'</strong></div>'}).join('')+'</div>';
   return '<div class="h3">'+lbl+'<small>'+sub+'</small></div>'+cards+'<div class="row nc" style="grid-template-columns:minmax(0,1fr)">'+sb(i?[[d,D],[i,I]]:[[d,D]],r,c.tot,R)+'</div>';
 };
