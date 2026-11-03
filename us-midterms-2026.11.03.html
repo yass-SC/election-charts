@@ -103,10 +103,10 @@ var hist=function(k){
   var ends=[[last(dd),D],[last(h.r),R]].map(function(e){return {v:e[0],c:e[1],y:y(e[0])+4}}).sort(function(a,b){return a.y-b.y});
   for(var n=1;n<ends.length;n++){if(ends[n].y-ends[n-1].y<13)ends[n].y=ends[n-1].y+13}
   var el=ends.map(function(e){return '<text x="'+(W-pr+10)+'" y="'+e.y+'" font-size="12" font-weight="600" fill="'+e.c+'">'+e.v+'</text>'}).join('');
-  var nd=Math.max(0,h.mj-last(dd)),nr=Math.max(0,h.mj-last(h.r));
-  var need='<div class="mc" style="grid-template-columns:1fr 1fr;margin-top:8px"><div class="l"><small>Демократи – още до мнозинство</small><strong>'+(nd?nd:'има мнозинство')+'</strong></div><div class="r"><small>Републиканци – още до мнозинство</small><strong>'+(nr?nr:'има мнозинство')+'</strong></div></div>';
+  var sen=(k=='sen');var nd=Math.max(0,h.mj-last(dd)),nr=Math.max(0,(sen?h.mj-1:h.mj)-last(h.r));
+  var need='<div class="mc" style="grid-template-columns:1fr 1fr;margin-top:8px"><div class="l"><small>Демократи – още до мнозинство ('+h.mj+')</small><strong>'+(nd?nd:'има мнозинство')+'</strong></div><div class="r"><small>Републиканци – още до '+(sen?'контрол (50 + вицепрезидент)':'мнозинство ('+h.mj+')')+'</small><strong>'+(nr?nr:(sen?'има контрол':'има мнозинство'))+'</strong></div></div>';
   var lg='<div class="leg" style="margin-top:6px"><span><i class="sw" style="background:'+D+'"></i>Демократи'+(k=='sen'?' и независими':'')+'</span><span><i class="sw" style="background:'+R+'"></i>Републиканци</span><span><i class="mk"></i>Мнозинство</span></div>';
-  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(dd,D)+ln(h.r,R)+xl+el+'</svg>'+lg+need+'<div class="foot" style="margin-top:6px">'+(k=='sen'?'В Сената са включени всички места в новия състав, и тези, които не са на ход.':'')+'</div>';
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(dd,D)+ln(h.r,R)+xl+el+'</svg>'+lg+need+'<div class="foot" style="margin-top:6px">'+(k=='sen'?'В Сената са включени всички места в новия състав, и тези, които не са на ход. Републиканците запазват контрола и с 50 места, защото при равенство решава вицепрезидентът.':'')+'</div>';
 };
 var last=function(a){return a&&a.length?a[a.length-1]:0};
 var chamber=function(k,lbl,sub){
