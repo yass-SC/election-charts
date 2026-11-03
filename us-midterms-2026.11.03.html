@@ -40,6 +40,7 @@ h1{font-size:18px;font-weight:600;margin:0 0 2px}
 .h3 small{font-weight:400;font-size:11px;color:var(--text-muted);margin-left:8px}
 .mc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 12px}
 .mc div{background:var(--surface-1);border-radius:8px;padding:10px 12px}
+.mc .l{text-align:left}.mc .c{text-align:center}.mc .r{text-align:right}
 .mc small{display:block;font-size:12px;color:var(--text-secondary)}
 .mc strong{font-size:20px;font-weight:600}
 .empty{font-size:13px;color:var(--text-muted);padding:10px 0}
@@ -94,7 +95,7 @@ var hist=function(k){
   var ln=function(a,c){return '<polyline fill="none" stroke="'+c+'" stroke-width="2" stroke-linejoin="round" points="'+a.map(function(v,i){return x(i)+','+y(v)}).join(' ')+'"/><circle cx="'+x(a.length-1)+'" cy="'+y(a[a.length-1])+'" r="4" fill="'+c+'" stroke="#1f1f1e" stroke-width="2"/>'};
   var gl=[0,0.25,0.5,0.75,1].map(function(t){var v=Math.round(h.tot*t);return '<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#2c2c2a" stroke-width="1"/><text x="'+(pl-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#898781">'+v+'</text>'}).join('');
   var step=Math.max(1,Math.ceil(T.length/8));
-  var xl=T.map(function(t,i){return i%step==0?'<text x="'+x(i)+'" y="'+(H-6)+'" text-anchor="middle" font-size="11" fill="#898781">'+t+'</text>':''}).join('');
+  var xl=T.map(function(t,i){return i%step==0?'<text x="'+x(i)+'" y="'+(H-6)+'" text-anchor="'+(i==T.length-1&&T.length>1?'end':'middle')+'" font-size="11" fill="#898781">'+t+'</text>':''}).join('');
   var mj='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(h.mj)+'" y2="'+y(h.mj)+'" stroke="#f0efec" stroke-width="1.5" stroke-dasharray="4 3"/><text x="'+(W-pr)+'" y="'+(y(h.mj)-5)+'" text-anchor="end" font-size="11" fill="#c3c2b7">мнозинство '+h.mj+'</text>';
   var dd=h.d.map(function(v,i){return v+((h.i||[])[i]||0)});
   return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img"><title>Места през нощта</title>'+gl+mj+ln(dd,D)+ln(h.r,R)+xl+'</svg>';
@@ -102,11 +103,12 @@ var hist=function(k){
 var last=function(a){return a&&a.length?a[a.length-1]:0};
 var chamber=function(k,lbl,sub){
   var c=HS[k],d=last(c.d),i=last(c.i),r=last(c.r),un=c.tot-d-i-r;
-  var cards='<div class="mc"><div><small>'+(k=='sen'?'Демократи и независими':'Демократи')+'</small><strong>'+(d+i)+'</strong></div><div><small>Републиканци</small><strong>'+r+'</strong></div><div><small>Още неясни</small><strong>'+un+'</strong></div></div>';
+  var it=k=='sen'?[['Демократи',d,'l'],['Независими',i,'l'],['Още неясни',un,'c'],['Републиканци',r,'r']]:[['Демократи',d,'l'],['Още неясни',un,'c'],['Републиканци',r,'r']];
+  var cards='<div class="mc" style="grid-template-columns:repeat('+it.length+',1fr)">'+it.map(function(x){return '<div class="'+x[2]+'"><small>'+x[0]+'</small><strong>'+x[1]+'</strong></div>'}).join('')+'</div>';
   return '<div class="h3">'+lbl+'<small>'+sub+'</small></div>'+cards+'<div class="row nc" style="grid-template-columns:minmax(0,1fr)">'+sb(i?[[d,D],[i,I]]:[[d,D]],r,c.tot,R)+'</div>';
 };
 var ov=function(){
-  return leg3()+chamber('sen','Сенат','100 места, мнозинство 51')+chamber('hou','Камара на представителите','435 места, мнозинство 218')+'<div class="h3">Места през нощта</div><div class="tabs" id="ctog"><button data-k="sen" class="on">Сенат</button><button data-k="hou">Камара</button></div><div id="hc">'+hist('sen')+'</div>';
+  return leg([[D,'Демократи'],[I,'Независими (с Демократите)'],[R,'Републиканци'],['var(--surface-1)','Неясни',1]],'Мнозинство')+chamber('sen','Сенат','100 места, мнозинство 51')+chamber('hou','Камара на представителите','435 места, мнозинство 218')+'<div class="h3">Места през нощта</div><div class="tabs" id="ctog"><button data-k="sen" class="on">Сенат</button><button data-k="hou">Камара</button></div><div id="hc">'+hist('sen')+'</div>';
 };
 var dist=function(list){
   return list.map(function(d){return '<div class="hr" style="grid-template-columns:70px minmax(0,1fr) 130px"><span>'+d[0]+'</span>'+rb(d[1],d[2],D,R)+'<span style="text-align:right">'+(d[3]?'Обявен: ':'Води: ')+(d[1]>d[2]?'Демократи':'Републиканци')+'</span></div>'}).join('');
@@ -114,7 +116,7 @@ var dist=function(list){
 var hou=function(){
   var c=DATA.housecontested,s=DATA.housestates;
   var a=leg([[D,'Демократи'],[R,'Републиканци'],['var(--surface-1)','Още неброени',1]],'Равенство')+'<div class="h3">Най-оспорвани окръзи<small>влизат нови, щом станат тесни</small></div>'+(c.length?rows(c,'cl',D,R):empty('Още няма данни.'));
-  var st='<div class="h3">Места по щат<small>щракни на щат за окръзите му</small></div>'+leg3();
+  var st='<div class="h3">Места по щат<small>щракни на щат за окръзите му</small></div>'+leg([[D,'Демократи'],[R,'Републиканци'],['var(--surface-1)','Неясни',1]],'Мнозинство');
   st+=s.length?s.map(function(x,i){var t=x[1]+x[2]+x[3];var has=x[4]&&x[4].length;return '<div class="row'+(has?'':' nc')+'"'+(has?' data-id="hs'+i+'"':'')+'><span class="nm">'+x[0]+'</span>'+sb([[x[1],D]],x[2],t,R)+'<span class="st">от '+t+' места<br>неясни '+x[3]+'</span></div>'+(has?'<div class="hist" id="hs'+i+'" style="display:none">'+dist(x[4])+'</div>':'')}).join(''):empty('Още няма данни.');
   return a+st;
 };
