@@ -46,18 +46,19 @@ h1{font-size:18px;font-weight:600;margin:0 0 2px}
 .empty{font-size:13px;color:var(--text-muted);padding:10px 0}
 .foot{font-size:11px;color:var(--text-muted);margin-top:16px;line-height:1.5}
 </style></head><body><div class="wrap">
-<h1>Междинни избори в САЩ 2026 – неофициални резултати</h1><div class="sub">Сенат, Камара, губернатори и референдуми · час – белгийско време</div><div class="upd">Обновено: 04.11.2026, 01:10 белгийско време – още няма обявени победители; в Кентъки е преброено около 9%</div>
+<h1>Междинни избори в САЩ 2026 – неофициални резултати</h1><div class="sub">Сенат, Камара, губернатори и референдуми · час – белгийско време</div><div class="upd">Обновено: 04.11.2026, 01:15 белгийско време (данни на Associated Press от 01:12) – обявени са Сенатът във Върджиния и 4 окръга в Камарата</div>
 <div class="tabs" id="tabs"></div>
 <div id="view"></div>
 <div class="foot">Неофициални данни, докато не бъдат обявени от Associated Press. Белият маркер при местата е мнозинството, при състезанията – равенство. Щракни на ред, за да видиш как се е променял или кои са окръзите на щата.</div>
 </div>
 <script>
-var DATA={"title": "Междинни избори в САЩ 2026 – неофициални резултати", "sub": "Сенат, Камара, губернатори и референдуми · час – белгийско време", "updated": "04.11.2026, 01:10 белгийско време – още няма обявени победители; в Кентъки е преброено около 9%", "times": ["00:30", "01:00"], "chambers": {"sen": {"tot": 100, "mj": 51, "d": [32, 32], "i": [2, 2], "r": [31, 31]}, "hou": {"tot": 435, "mj": 218, "d": [0, 0], "i": [0, 0], "r": [0, 0]}}, "senate": [["Кентъки", 51.5, 47.1, 9, "Води: Демократи", 0, [["01:07", 51.5, 47.1]]]], "gov": [], "housecontested": [], "housestates": [], "measures": [], "foot": "Неофициални данни, докато не бъдат обявени от Associated Press. Белият маркер при местата е мнозинството, при състезанията – равенство. Щракни на ред, за да видиш как се е променял или кои са окръзите на щата."};
+var DATA={"title": "Междинни избори в САЩ 2026 – неофициални резултати", "sub": "Сенат, Камара, губернатори и референдуми · час – белгийско време", "updated": "04.11.2026, 01:15 белгийско време (данни на Associated Press от 01:12) – обявени са Сенатът във Върджиния и 4 окръга в Камарата", "times": ["00:30", "01:00", "01:15"], "chambers": {"sen": {"tot": 100, "mj": 51, "d": [32, 32, 33], "i": [2, 2, 2], "r": [31, 31, 31]}, "hou": {"tot": 435, "mj": 218, "d": [0, 0, 3], "i": [0, 0, 0], "r": [0, 0, 1]}}, "senate": [["Кентъки", 51.5, 47.1, 9, "Води: Демократи", 0, [["01:07", 51.5, 47.1]]], ["Върджиния", null, null, null, "<b>Обявен:</b> Демократи", 1]], "gov": [], "housecontested": [], "housestates": [["Флорида", 2, 0, 26, []], ["Кентъки", 1, 1, 4, []]], "measures": [], "foot": "Неофициални данни, докато не бъдат обявени от Associated Press. Белият маркер при местата е мнозинството, при състезанията – равенство. Щракни на ред, за да видиш как се е променял или кои са окръзите на щата."};
 var D='#2a6fb8',I='#6db3ea',R='#d03b3b',Y='#1baf7a',N='#eb6834';
 var f=function(v){return String(Math.round(v*10)/10).replace('.',',')+'%'};
 var leg=function(a,lm){return '<div class="leg">'+a.map(function(x){return '<span><i class="sw" style="background:'+x[0]+(x[2]?';border:1px solid var(--border)':'')+'"></i>'+x[1]+'</span>'}).join('')+'<span><i class="mk"></i>'+lm+'</span></div>'};
 var leg3=function(){return '<div class="leg3"><div class="L"><span><i class="sw" style="background:'+D+'"></i>Демократи</span><span><i class="sw" style="background:'+I+'"></i>Независими (с Демократите)</span></div><div class="C"><span><i class="sw" style="background:var(--surface-1);border:1px solid var(--border)"></i>Неясни</span><span><i class="mk"></i>Мнозинство</span></div><div class="Rr"><span><i class="sw" style="background:'+R+'"></i>Републиканци</span></div></div>'};
 var rb=function(a,b,ca,cb){
+  if(a==null)return '<div class="box"><div class="trk"></div></div>';
   return '<div class="box"><div class="trk"><div class="sg l" style="width:'+a+'%;background:'+ca+'">'+(a>=8?f(a):'')+'</div><div class="sg r" style="width:'+b+'%;background:'+cb+'">'+(b>=8?f(b):'')+'</div></div><span class="mid" style="left:'+((a+b)/2)+'%"></span></div>';
 };
 var sb=function(left,right,tot,rc){
@@ -71,7 +72,7 @@ var rows=function(list,key,ca,cb){
   return list.map(function(r){
     var id=key+(seed++);
     var h=r[6]||[];
-    var head='<div class="row'+(h.length?'':' nc')+'"'+(h.length?' data-id="'+id+'"':'')+'><span class="nm">'+r[0]+'</span>'+rb(r[1],r[2],ca,cb)+'<span class="st">'+r[4]+'<br>преброени '+r[3]+'%</span></div>';
+    var head='<div class="row'+(h.length?'':' nc')+'"'+(h.length?' data-id="'+id+'"':'')+'><span class="nm">'+r[0]+'</span>'+rb(r[1],r[2],ca,cb)+'<span class="st">'+r[4]+(r[3]!=null?'<br>преброени '+r[3]+'%':'')+'</span></div>';
     var hh=h.length?'<div class="hist" id="'+id+'" style="display:none">'+h.map(function(x){return '<div class="hr"><span>'+x[0]+'</span>'+rb(x[1],x[2],ca,cb)+'</div>'}).join('')+'</div>':'';
     return head+hh;
   }).join('');
